@@ -1,0 +1,829 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AutoDeals By Sajad - Find Your Perfect Second-Hand Car</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🚗</text></svg>">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header Styles */
+        header {
+            background: #1e3a8a;
+            color: white;
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #fb923c;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            transition: color 0.3s ease;
+            font-weight: 500;
+        }
+
+        nav a:hover {
+            color: #fb923c;
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(rgba(30, 58, 138, 0.8), rgba(30, 58, 138, 0.8)), 
+                        url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 600"><rect fill="%23374151" width="1200" height="600"/><circle fill="%23fb923c" cx="200" cy="400" r="80" opacity="0.3"/><circle fill="%231e3a8a" cx="800" cy="200" r="120" opacity="0.3"/><rect fill="%23fb923c" x="400" y="350" width="200" height="80" rx="40" opacity="0.4"/><rect fill="%231e3a8a" x="600" y="180" width="180" height="70" rx="35" opacity="0.4"/></svg>');
+            background-size: cover;
+            background-position: center;
+            height: 70vh;
+            display: flex;
+            align-items: center;
+            text-align: center;
+            color: white;
+        }
+
+        .hero-content h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+
+        .hero-content p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+        }
+
+        .btn {
+            background: #fb923c;
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 5px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+
+        .btn:hover {
+            background: #ea580c;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(251, 146, 60, 0.4);
+        }
+
+        /* Featured Cars Section */
+        .featured-cars {
+            padding: 4rem 0;
+            background: #f8fafc;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            color: #1e3a8a;
+        }
+
+        .cars-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .car-card {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .car-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+        }
+
+        .car-image {
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(45deg, #374151, #6b7280);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .car-image::before {
+            content: '🚗';
+            font-size: 4rem;
+            opacity: 0.7;
+        }
+
+        .car-info {
+            padding: 1.5rem;
+        }
+
+        .car-info h3 {
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+            color: #1e3a8a;
+        }
+
+        .car-price {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #fb923c;
+            margin-bottom: 0.5rem;
+        }
+
+        .car-details {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+            color: #6b7280;
+        }
+
+        /* Page Content */
+        .page {
+            display: none;
+            min-height: 60vh;
+            padding: 4rem 0;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        .page-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        /* Cars for Sale Page */
+        .filters {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .filter-group {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .filter-group label {
+            font-weight: 600;
+            color: #1e3a8a;
+        }
+
+        .filter-group select, .filter-group input {
+            padding: 0.5rem;
+            border: 1px solid #d1d5db;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+
+        /* About Us Page */
+        .about-section {
+            margin-bottom: 3rem;
+        }
+
+        .about-section h2 {
+            color: #1e3a8a;
+            margin-bottom: 1rem;
+            font-size: 2rem;
+        }
+
+        .about-section p {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            margin-bottom: 1rem;
+        }
+
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .team-member {
+            text-align: center;
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .team-member .photo {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, #1e3a8a, #fb923c);
+            margin: 0 auto 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 2rem;
+        }
+
+        /* Contact Page */
+        .contact-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            align-items: start;
+        }
+
+        .contact-form {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #1e3a8a;
+        }
+
+        .form-group input, .form-group textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #d1d5db;
+            border-radius: 5px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-group input:focus, .form-group textarea:focus {
+            outline: none;
+            border-color: #fb923c;
+        }
+
+        .map-container {
+            background: #f3f4f6;
+            border-radius: 10px;
+            height: 400px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #6b7280;
+            font-size: 1.1rem;
+        }
+
+        /* Footer */
+        footer {
+            background: #1e3a8a;
+            color: white;
+            padding: 3rem 0 1rem;
+            margin-top: 4rem;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-section h3 {
+            margin-bottom: 1rem;
+            color: #fb923c;
+        }
+
+        .footer-section a {
+            color: white;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-section a:hover {
+            color: #fb923c;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .social-links a {
+            background: #fb923c;
+            color: white;
+            padding: 0.5rem;
+            border-radius: 50%;
+            text-decoration: none;
+            transition: background 0.3s ease;
+        }
+
+        .social-links a:hover {
+            background: #ea580c;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid #374151;
+            color: #9ca3af;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            nav ul {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background: #1e3a8a;
+                flex-direction: column;
+                padding: 1rem;
+                box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            }
+
+            nav ul.show {
+                display: flex;
+            }
+
+            .hero-content h1 {
+                font-size: 2rem;
+            }
+
+            .hero-content p {
+                font-size: 1rem;
+            }
+
+            .cars-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .contact-content {
+                grid-template-columns: 1fr;
+            }
+
+            .filter-group {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .filter-group > * {
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 0 15px;
+            }
+
+            .hero {
+                height: 50vh;
+            }
+
+            .hero-content h1 {
+                font-size: 1.5rem;
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">AutoDeals By Sajad</div>
+                <nav>
+                    <ul id="nav-menu">
+                        <li><a href="#" onclick="showPage('home')">Home</a></li>
+                        <li><a href="#" onclick="showPage('cars')">Cars for Sale</a></li>
+                        <li><a href="#" onclick="showPage('about')">About Us</a></li>
+                        <li><a href="#" onclick="showPage('contact')">Contact</a></li>
+                    </ul>
+                </nav>
+                <button class="mobile-menu-btn" onclick="toggleMobileMenu()">☰</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Home Page -->
+    <div id="home" class="page active">
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="container">
+                <div class="hero-content">
+                    <h1>Find Your Perfect Second-Hand Car Today</h1>
+                    <p>Quality pre-owned vehicles at unbeatable prices. Trusted by thousands of satisfied customers.</p>
+                    <a href="#" class="btn" onclick="showPage('cars')">Browse Cars</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Featured Cars -->
+        <section class="featured-cars">
+            <div class="container">
+                <h2 class="section-title">Featured Cars</h2>
+                <div class="cars-grid">
+                    <div class="car-card">
+                        <div class="car-image"></div>
+                        <div class="car-info">
+                            <h3>Honda Civic 2019</h3>
+                            <div class="car-price">$18,500</div>
+                            <div class="car-details">
+                                <span>Year: 2019</span>
+                                <span>Mileage: 45,000 km</span>
+                            </div>
+                            <a href="#" class="btn">View Details</a>
+                        </div>
+                    </div>
+                    <div class="car-card">
+                        <div class="car-image"></div>
+                        <div class="car-info">
+                            <h3>Toyota Corolla 2020</h3>
+                            <div class="car-price">$22,000</div>
+                            <div class="car-details">
+                                <span>Year: 2020</span>
+                                <span>Mileage: 38,000 km</span>
+                            </div>
+                            <a href="#" class="btn">View Details</a>
+                        </div>
+                    </div>
+                    <div class="car-card">
+                        <div class="car-image"></div>
+                        <div class="car-info">
+                            <h3>Ford Focus 2018</h3>
+                            <div class="car-price">$16,800</div>
+                            <div class="car-details">
+                                <span>Year: 2018</span>
+                                <span>Mileage: 52,000 km</span>
+                            </div>
+                            <a href="#" class="btn">View Details</a>
+                        </div>
+                    </div>
+                    <div class="car-card">
+                        <div class="car-image"></div>
+                        <div class="car-info">
+                            <h3>Nissan Altima 2019</h3>
+                            <div class="car-price">$19,200</div>
+                            <div class="car-details">
+                                <span>Year: 2019</span>
+                                <span>Mileage: 41,000 km</span>
+                            </div>
+                            <a href="#" class="btn">View Details</a>
+                        </div>
+                    </div>
+                    <div class="car-card">
+                        <div class="car-image"></div>
+                        <div class="car-info">
+                            <h3>BMW 3 Series 2017</h3>
+                            <div class="car-price">$24,500</div>
+                            <div class="car-details">
+                                <span>Year: 2017</span>
+                                <span>Mileage: 68,000 km</span>
+                            </div>
+                            <a href="#" class="btn">View Details</a>
+                        </div>
+                    </div>
+                    <div class="car-card">
+                        <div class="car-image"></div>
+                        <div class="car-info">
+                            <h3>Mazda CX-5 2020</h3>
+                            <div class="car-price">$26,800</div>
+                            <div class="car-details">
+                                <span>Year: 2020</span>
+                                <span>Mileage: 35,000 km</span>
+                            </div>
+                            <a href="#" class="btn">View Details</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Cars for Sale Page -->
+    <div id="cars" class="page">
+        <div class="container">
+            <h2 class="section-title">Cars for Sale</h2>
+            
+            <!-- Filters -->
+            <div class="filters">
+                <div class="filter-group">
+                    <label for="price-filter">Price Range:</label>
+                    <select id="price-filter">
+                        <option value="">All Prices</option>
+                        <option value="0-15000">Under $15,000</option>
+                        <option value="15000-25000">$15,000 - $25,000</option>
+                        <option value="25000-35000">$25,000 - $35,000</option>
+                        <option value="35000+">Above $35,000</option>
+                    </select>
+                    
+                    <label for="year-filter">Year:</label>
+                    <select id="year-filter">
+                        <option value="">All Years</option>
+                        <option value="2023">2023</option>
+                        <option value="2022">2022</option>
+                        <option value="2021">2021</option>
+                        <option value="2020">2020</option>
+                        <option value="2019">2019</option>
+                        <option value="2018">2018</option>
+                    </select>
+                    
+                    <label for="make-filter">Make:</label>
+                    <select id="make-filter">
+                        <option value="">All Makes</option>
+                        <option value="honda">Honda</option>
+                        <option value="toyota">Toyota</option>
+                        <option value="ford">Ford</option>
+                        <option value="nissan">Nissan</option>
+                        <option value="bmw">BMW</option>
+                        <option value="mazda">Mazda</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Car Listings -->
+            <div class="cars-grid">
+                <div class="car-card">
+                    <div class="car-image"></div>
+                    <div class="car-info">
+                        <h3>Honda Civic 2019</h3>
+                        <div class="car-price">$18,500</div>
+                        <div class="car-details">
+                            <span>Year: 2019</span>
+                            <span>Mileage: 45,000 km</span>
+                        </div>
+                        <a href="#" class="btn">View Details</a>
+                    </div>
+                </div>
+                <div class="car-card">
+                    <div class="car-image"></div>
+                    <div class="car-info">
+                        <h3>Toyota Corolla 2020</h3>
+                        <div class="car-price">$22,000</div>
+                        <div class="car-details">
+                            <span>Year: 2020</span>
+                            <span>Mileage: 38,000 km</span>
+                        </div>
+                        <a href="#" class="btn">View Details</a>
+                    </div>
+                </div>
+                <div class="car-card">
+                    <div class="car-image"></div>
+                    <div class="car-info">
+                        <h3>Ford Focus 2018</h3>
+                        <div class="car-price">$16,800</div>
+                        <div class="car-details">
+                            <span>Year: 2018</span>
+                            <span>Mileage: 52,000 km</span>
+                        </div>
+                        <a href="#" class="btn">View Details</a>
+                    </div>
+                </div>
+                <div class="car-card">
+                    <div class="car-image"></div>
+                    <div class="car-info">
+                        <h3>Nissan Altima 2019</h3>
+                        <div class="car-price">$19,200</div>
+                        <div class="car-details">
+                            <span>Year: 2019</span>
+                            <span>Mileage: 41,000 km</span>
+                        </div>
+                        <a href="#" class="btn">View Details</a>
+                    </div>
+                </div>
+                <div class="car-card">
+                    <div class="car-image"></div>
+                    <div class="car-info">
+                        <h3>BMW 3 Series 2017</h3>
+                        <div class="car-price">$24,500</div>
+                        <div class="car-details">
+                            <span>Year: 2017</span>
+                            <span>Mileage: 68,000 km</span>
+                        </div>
+                        <a href="#" class="btn">View Details</a>
+                    </div>
+                </div>
+                <div class="car-card">
+                    <div class="car-image"></div>
+                    <div class="car-info">
+                        <h3>Mazda CX-5 2020</h3>
+                        <div class="car-price">$26,800</div>
+                        <div class="car-details">
+                            <span>Year: 2020</span>
+                            <span>Mileage: 35,000 km</span>
+                        </div>
+                        <a href="#" class="btn">View Details</a>
+                    </div>
+                </div>
+                <div class="car-card">
+                    <div class="car-image"></div>
+                    <div class="car-info">
+                        <h3>Hyundai Elantra 2021</h3>
+                        <div class="car-price">$21,500</div>
+                        <div class="car-details">
+                            <span>Year: 2021</span>
+                            <span>Mileage: 28,000 km</span>
+                        </div>
+                        <a href="#" class="btn">View Details</a>
+                    </div>
+                </div>
+                <div class="car-card">
+                    <div class="car-image"></div>
+                    <div class="car-info">
+                        <h3>Volkswagen Jetta 2019</h3>
+                        <div class="car-price">$19,800</div>
+                        <div class="car-details">
+                            <span>Year: 2019</span>
+                            <span>Mileage: 43,000 km</span>
+                        </div>
+                        <a href="#" class="btn">View Details</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- About Us Page -->
+    <div id="about" class="page">
+        <div class="container">
+            <div class="page-content">
+                <div class="about-section">
+                    <h2>About AutoDeals By Sajad</h2>
+                    <p>Welcome to AutoDeals By Sajad, your trusted partner in finding the perfect second-hand vehicle. With over 15 years of experience in the automotive industry, we have built our reputation on honesty, quality, and exceptional customer service.</p>
+                    
+                    <p>Founded in 2009 by Sajad Ahmed, our dealership has grown from a small family business to one of the most respected second-hand car dealers in the region. We understand that buying a car is a significant investment, which is why we ensure every vehicle in our inventory meets our strict quality standards.</p>
+                    
+                    <p>Our commitment to transparency means you'll always know exactly what you're getting. Every car comes with a detailed history report, and our experienced mechanics thoroughly inspect each vehicle before it reaches our showroom floor.</p>
+                </div>
+
+                <div class="about-section">
+                    <h2>Why Choose Us?</h2>
+                    <p>✓ Over 15 years of experience in the automotive industry</p>
+                    <p>✓ Rigorous quality inspection process for all vehicles</p>
+                    <p>✓ Transparent pricing with no hidden fees</p>
+                    <p>✓ Comprehensive warranty options available</p>
+                    <p>✓ Financing options to suit your budget</p>
+                    <p>✓ After-sales support and maintenance services</p>
+                </div>
+
+                <div class="about-section">
+                    <h2>Our Team</h2>
+                    <div class="team-grid">
+                        <div class="team-member">
+                            <div class="photo">SA</div>
+                            <h3>Sajad Ahmed</h3>
+                            <p>Founder & CEO</p>
+                        </div>
+                        <div class="team-member">
+                            <div class="photo">MK</div>
+                            <h3>Mohammad Khan</h3>
+                            <p>Sales Manager</p>
+                        </div>
+                        <div class="team-member">
+                            <div class="photo">AR</div>
+                            <h3>Ali Rahman</h3>
+                            <p>Service Advisor</p>
+                        </div>
+                        <div class="team-member">
+                            <div class="photo">FS</div>
+                            <h3>Fatima Shah</h3>
+                            <p>Finance Specialist</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Contact Page -->
+    <div id="contact" class="page">
+        <div class="container">
+            <h2 class="section-title">Contact Us</h2>
+            <div class="contact-content">
+                <div class="contact-form">
+                    <h3>Get in Touch</h3>
+                    <form onsubmit="handleSubmit(event)">
+                        <div class="form-group">
+                            <label for="name">Name</label>
+                            <input type="text" id="name" name="name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" id="email" name="email" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="phone">Phone Number</label>
+                            <input type="tel" id="phone" name="phone">
+                        </div>
+                        <div class="form-group">
+                            <label for="message">Message</label>
+                            <textarea id="message" name="message" rows="5" required></textarea>
+                        </div>
+                        <button type="submit" class="btn">Send Message</button>
+                    </form>
+                </div>
+                <div class="map-container">
+                    <div>
+                        <h3>Visit Our Showroom</h3>
+                        <p>📍 123 Auto Street, Car District<br>
+                        Mumbai, Maharashtra 400001<br>
+                        📞 +91 98765 43210<br>
+                        ✉️ info@autodealsbyisajad.com</p>
+                        <p style="margin-top: 2rem; color: #6b7280;">[Google Maps Integration would go here]</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>AutoDeals By Sajad</h3>
+                    <p>Your trusted partner for quality second-hand cars. We're committed to helping you find the perfect vehicle at the right price.</p>
+                    <div class="social-links">
+                        <a href="#" title="Facebook">📘</a>
+                        <a href="#" title="Instagram">📷</a>
+                        <a href="#" title="Twitter">🐦</a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <p><a href="#" onclick="showPage('home')">Home</a></p>
+                    <p><a href="#" onclick="showPage('cars')">Cars for Sale</a></p>
+                    <p><a href="#" onclick="showPage('about')">About Us</a></p>
+                    <p>
